@@ -1,0 +1,36 @@
+{
+    "name": "tiagof2/f2-laravel-enums",
+    "description": "A Laravel package for enum handler",
+    "license": "MIT",
+    "keywords": [
+        "classes",
+        "enums",
+        "helpers",
+        "laravel",
+        "tools",
+        "tiagof2"
+    ],
+    "homepage": "https://tiagofranca.com",
+    "authors": [
+        {
+            "name": "Tiago França",
+            "email": "dev+composer@tiagofranca.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "TiagoF2\\Enums\\": "src/Enums/"
+        }
+    },
+    "require": {
+        "php": "^7.2|^8.0",
+        "ext-json": "*",
+        "illuminate/contracts": "^5.8|^6.0|^7.0|^8.0",
+        "illuminate/support": "^5.8|^6.0|^7.0|^8.0",
+        "illuminate/pagination": "^5.8|^6.0|^7.0|^8.0"
+    },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist"
+    }
+}
