@@ -1,26 +1,26 @@
 <?php
 
-namespace TiagoF2\Enums;
+namespace App\Libs\Enums;
 
-use Illuminate\Support\Str;
+use App\Helpers\StringHelpers;
+use CollectionSearch;
 use Illuminate\Support\Facades\Cache;
-use TiagoF2\Helpers\StringHelpers;
-use TiagoF2\Helpers\CollectionSearch;
+use Str;
 
-class Enum implements EnumInterface
+abstract class Enum implements EnumInterface
 {
     protected static bool $clearCache = false;
 
-    //const ABERTO         = 1;
+    //const ABERTO = 1;
 
     protected static array $enums = [
-        //static::ABERTO          => 'Aberto',
+        //static::ABERTO => 'Aberto',
     ];
 
     public static function get(
         int|null $enum,
         bool $tranlate = true,
-        string $locale = null
+        ?string $locale = null
     ): string|null {
         return static::getValue($enum, $tranlate, $locale);
     }
@@ -28,9 +28,10 @@ class Enum implements EnumInterface
     public static function getValue(
         int|null $enum,
         bool $tranlate = true,
-        string $locale = null
+        ?string $locale = null
     ): string|null {
         $value = static::$enums[$enum] ?? null;
+
         if (!$value || !$tranlate) {
             return $value;
         }
@@ -40,32 +41,36 @@ class Enum implements EnumInterface
 
     public static function getEnum(string|null $value): int|null
     {
+        if (!$value) {
+            return null;
+        }
+
         $value = trim($value);
 
         return array_flip(static::$enums)[$value] ?? null;
     }
 
     public static function enums(
-        bool|null $only_ids = false,
+        bool|null $onlyIds = false,
         bool|null $tranlate = null,
         string|null $locale = null,
-        bool $update_cache = false
+        bool $updateCache = false
     ): array {
         return static::enumList(
-            $only_ids,
+            $onlyIds,
             $tranlate,
             $locale,
-            $update_cache
+            $updateCache
         );
     }
 
     public static function enumList(
-        bool|null $only_ids = false,
+        bool|null $onlyIds = false,
         bool|null $tranlate = null,
         string|null $locale = null,
-        bool $update_cache = false
+        bool $updateCache = false
     ): array {
-        if ($only_ids) {
+        if ($onlyIds) {
             return array_keys(static::$enums);
         }
 
@@ -73,20 +78,20 @@ class Enum implements EnumInterface
             return static::$enums ?? [];
         }
 
-        $locale = $locale ?? app()->getLocale();
+        $locale ??= app()->getLocale();
 
-        $cache_key = Str::slug(static::class . "_enum_list_locale-{$locale}");
+        $cacheKey = \Str::slug(static::class . "_enum_list_locale-{$locale}");
 
-        if ($update_cache) {
-            Cache::forget($cache_key);
+        if ($updateCache) {
+            Cache::forget($cacheKey);
         }
 
-        return Cache::remember($cache_key, 300 /*secs*/, function () use ($locale) {
-            $collection = collect(static::$enums ?? [])->map(function ($trans_key) use ($locale) {
-                return static::trans($trans_key, $locale);
-            });
-
-            return $collection->all();
+        return Cache::remember($cacheKey, 300 /*secs*/, function () use ($locale) {
+            return  collect(
+                static::$enums ?? []
+            )->map(
+                fn ($transKey) => static::trans($transKey, $locale)
+            )->all();
         });
     }
 
@@ -97,17 +102,15 @@ class Enum implements EnumInterface
 
     public static function cached()
     {
-        $class_name = StringHelpers::classNameSlug(static::class);
+        $className = StringHelpers::classNameSlug(static::class);
 
-        $cache_key = "{$class_name}_enum_list";
+        $cacheKey = "{$className}_enum_list";
 
         if (static::$clearCache) {
-            $cache = Cache::forget($cache_key);
+            Cache::forget($cacheKey);
         }
 
-        $data = Cache::remember($cache_key, 3600 /*secs*/, function () {
-            return static::enumList(null, true);
-        });
+        $data = Cache::remember($cacheKey, 3600 /*secs*/, fn () => static::enumList(null, true));
 
         return collect($data ?? []);
     }
@@ -127,17 +130,28 @@ class Enum implements EnumInterface
 
     public static function trans(
         string $key,
-        string $locale = null
+        ?string $locale = null
     ) {
         //App\Enums\PlanEnum, App\Enums\PlanEnum::class, App\Enums\PlanEnum or plan_enum
-        $class_name = StringHelpers::classNameSlug(static::class);
+        $className = StringHelpers::classNameSlug(static::class);
 
-        $class_tranlation_key = Str::snake($class_name); // OperationEnum -> operation_enum
+        $snakeCaseOfClass = Str::snake($className); // OperationEnum -> operation_enum
 
-        return __("enum.{$class_tranlation_key}.{$key}", [], $locale);
+        $locale ??= app()->getLocale();
+
+        // The translation file must be here:
+        // resources/lang/[LANG]/enums/operation_enum.php
+
+        return \str_replace(
+            [
+                "{$snakeCaseOfClass}."
+            ],
+            '',
+            __("{$snakeCaseOfClass}.{$key}", [], "{$locale}/enums")
+        );
     }
 
-    public static function transByEnum(int $enum, string $locale = null)
+    public static function transByEnum(int $enum, ?string $locale = null)
     {
         return static::trans(static::getValue($enum), $locale);
     }

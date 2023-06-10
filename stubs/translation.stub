@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Usage:
+ *
+ * By enum:
+ * \App\Enums\{{name}}Enum::getValue(1, true, '{{langCode}}');
+ *
+ * By key:
+ * \App\Enums\{{name}}Enum::trans('some_here', '{{langCode}}');
+ */
+
+return [
+    'some_here' => 'Some here',
+];

@@ -1,9 +1,9 @@
 <?php
 
-namespace TiagoF2\Enums;
+namespace TiagoF2\Enums\Core;
 
-use TiagoF2\Enums\EnumInterface;
-use TiagoF2\Enums\Enum;
+use TiagoF2\Enums\Core\EnumInterface;
+use TiagoF2\Enums\Core\Enum;
 
 trait HasEnum
 {

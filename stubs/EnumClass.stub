@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Enums;
+
+use App\Libs\Enums\Enum;
+
+class {{name}}Enum extends Enum
+{
+    public const {{UPPER_SNAKE_NAME}}_SOME_HERE = 1;
+
+    protected static array $enums = [
+        self::{{UPPER_SNAKE_NAME}}_SOME_HERE => 'some_here',
+    ];
+}
