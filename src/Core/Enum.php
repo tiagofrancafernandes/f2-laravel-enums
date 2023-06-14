@@ -5,7 +5,7 @@ namespace TiagoF2\Enums\Core;
 use TiagoF2\Helpers\StringHelpers;
 use CollectionSearch;
 use Illuminate\Support\Facades\Cache;
-use Str;
+use Illuminate\Support\Str;
 
 abstract class Enum implements EnumInterface
 {
