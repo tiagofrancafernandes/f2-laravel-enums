@@ -28,7 +28,7 @@
         "illuminate/contracts": "^5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
         "illuminate/pagination": "^5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
         "illuminate/support": "^5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
-        "tiagof2/f2-politool": "dev-master"
+        "tiagof2/f2-politool": "^2.0"
     },
     "extra": {
         "laravel": {
