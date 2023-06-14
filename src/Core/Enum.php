@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Libs\Enums;
+namespace TiagoF2\Enums\Core;
 
 use App\Helpers\StringHelpers;
 use CollectionSearch;
