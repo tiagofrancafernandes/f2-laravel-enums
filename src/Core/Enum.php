@@ -11,10 +11,15 @@ abstract class Enum implements EnumInterface
 {
     protected static bool $clearCache = false;
 
-    //const ABERTO = 1;
+    // const ABERTO = 1;
 
     protected static array $enums = [
-        //static::ABERTO => 'Aberto',
+        /**
+         * Note:
+         * need be 'self', not 'static'
+         */
+
+        // self::ABERTO => 'Aberto',
     ];
 
     public static function get(
