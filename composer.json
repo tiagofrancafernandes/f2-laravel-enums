@@ -28,6 +28,9 @@
         "illuminate/contracts": "^5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
         "illuminate/pagination": "^5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
         "illuminate/support": "^5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
+        "illuminate/console": "^5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
+        "psy/psysh": "^0.10.4|^0.11.1",
+        "symfony/var-dumper": "^4.3.4|^5.0|^6.0",
         "tiagof2/f2-politool": "^2.0"
     },
     "extra": {

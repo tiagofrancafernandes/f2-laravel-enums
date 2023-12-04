@@ -15,7 +15,7 @@ class Stub
      */
     public static function getStubsPathOnApp(): string
     {
-        return base_path('stubs/f2-enums');
+        return \Illuminate\Support\Facades\App::basePath('stubs/f2-enums');
     }
 
     /**
@@ -89,7 +89,7 @@ class Stub
         string $destination,
         array $strListToReplace,
         bool $replaceFile = false
-    ) {
+    ): ?bool {
         try {
             if (\file_exists($destination) && !$replaceFile) {
                 ConsoleText::line('', "File '{$destination}' exists," . '');
@@ -109,7 +109,7 @@ class Stub
             );
         } catch (\Throwable $th) {
             Log::error($th);
-            if (!app()->isProduction()) {
+            if (!\Illuminate\Support\Facades\App::isProduction()) {
                 throw $th;
             }
 

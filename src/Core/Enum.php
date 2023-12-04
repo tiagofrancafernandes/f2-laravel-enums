@@ -3,9 +3,11 @@
 namespace TiagoF2\Enums\Core;
 
 use TiagoF2\Helpers\StringHelpers;
-use CollectionSearch;
+use TiagoF2\Helpers\CollectionSearch;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use TiagoF2\Helpers\LaravelHelpers;
+use Illuminate\Support\Facades\App;
 
 abstract class Enum implements EnumInterface
 {
@@ -69,6 +71,15 @@ abstract class Enum implements EnumInterface
         );
     }
 
+    /**
+     * enumList function
+     *
+     * @param boolean $onlyIds
+     * @param boolean|null|null $tranlate
+     * @param string|null|null $locale
+     * @param boolean $updateCache
+     * @return array
+     */
     public static function enumList(
         bool|null $onlyIds = false,
         bool|null $tranlate = null,
@@ -83,7 +94,7 @@ abstract class Enum implements EnumInterface
             return static::$enums ?? [];
         }
 
-        $locale ??= app()->getLocale();
+        $locale ??= App::getLocale();
 
         $cacheKey = \Str::slug(static::class . "_enum_list_locale-{$locale}");
 
@@ -142,7 +153,7 @@ abstract class Enum implements EnumInterface
 
         $snakeCaseOfClass = Str::snake($className); // OperationEnum -> operation_enum
 
-        $locale ??= app()->getLocale();
+        $locale ??= App::getLocale();
 
         // The translation file must be here:
         // resources/lang/[LANG]/enums/operation_enum.php
@@ -152,7 +163,7 @@ abstract class Enum implements EnumInterface
                 "{$snakeCaseOfClass}."
             ],
             '',
-            __("{$snakeCaseOfClass}.{$key}", [], "{$locale}/enums")
+            LaravelHelpers::trans("{$snakeCaseOfClass}.{$key}", [], "{$locale}/enums")
         );
     }
 
